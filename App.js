@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { onAuthStateChanged } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
 import Login from './src/screens/Login';
-
+import { useState } from 'react';
 const firebaseConfig = {
   apiKey: "AIzaSyBb7LA17X8rFCx-LP0dX7cSFYvcnIune6M",
   authDomain: "projecttest1-f4224.firebaseapp.com",
@@ -16,23 +16,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export default function App() {
+  const auth = getAuth();
+  const [user, setUser] = useState(auth.currentUser);
 
   onAuthStateChanged(getAuth(app), (user) => {
     if (user) {
       console.log("User logged in...");
-      return (
-        <AppNavigation></AppNavigation>
-      );
+      setUser(user);
     } else {
       console.log("User not logged in...");
-      return (
-        <Login></Login>
-      );
+      setUser(null);
     }
   });
-
-  const auth = getAuth();
-  const user = auth.currentUser;
 
   if (user) {
     return (

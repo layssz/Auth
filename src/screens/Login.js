@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, TextInput, Button, Alert } from "react-native";
 import validator from "validator";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword} from "firebase/auth";
 import * as SecureStore from 'expo-secure-store';
 
 const Login = () => {
@@ -28,6 +28,20 @@ const Login = () => {
       })
   }
 
+  const doRegister = () => { 
+    createUserWithEmailAndPassword(firebaseAuth, email, password)
+      .then((userCredential) => {
+    
+        const user = userCredential.user;
+        console.log('Usuario registrado:', user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('Error ao registrar o usuario:', errorCode, errorMessage);
+      });
+    }
+
   useEffect(() => {
     if (validator.isEmail(email) && validator.isLength(password, 6)) {
       setButtonDisabled(false);
@@ -51,6 +65,7 @@ const Login = () => {
         placeholder="Digite sua senha"
       ></TextInput>
       <Button title="Entrar" onPress={doLogin} disabled={buttonDisabled}></Button>
+      <Button title="Registrar" onPress={doRegister} disabled={buttonDisabled}></Button>
     </View>
   );
 }

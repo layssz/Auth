@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 export default function App() {
   const auth = getAuth();
   const [user, setUser] = useState(auth.currentUser);
-
+  
   onAuthStateChanged(getAuth(app), (user) => {
     if (user) {
       console.log("User logged in...");
@@ -38,4 +38,5 @@ export default function App() {
       <Login></Login>
     );
   }
+  
 }
